@@ -6,35 +6,19 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cvccorp.javatest.entity.Transferencia;
 import com.cvccorp.javatest.repository.TransferenciaRepository;
-import com.cvccorp.javatest.service.TransferenciaService;
 import com.cvccorp.javatest.utils.Util;
 
-@RunWith(SpringRunner.class)
-public class TransferenciaServiceTest {
+@SpringBootTest
+public class JavatestApplicationTests {
 	
-	@TestConfiguration
-    static class TransferenciaServiceTestContextConfiguration {
-  
-        @Bean
-        public TransferenciaService transferenciaService() {
-            return new TransferenciaService();
-        }
-    }
- 
-    @MockBean
+	@MockBean
     private TransferenciaRepository transferenciaRepository;
 
-   
-    
-     
     @Test
     public void whenTramsferenciaTipoA_thenTaxaA() throws Exception {
     	Transferencia tA = new Transferencia();
