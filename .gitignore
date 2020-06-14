@@ -1,11 +1,7 @@
-HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**
-!**/src/test/**
-
 ### ECLIPSE ###
-/javatest/target/*
-/javatest/.project
-/javatest/.classpath
-/javatest/.factorypath
+.mvn/wrapper
+.settings
+target/*
+.project
+.classpath
+.factorypath
