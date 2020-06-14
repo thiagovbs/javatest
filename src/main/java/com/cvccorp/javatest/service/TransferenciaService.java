@@ -2,6 +2,7 @@ package com.cvccorp.javatest.service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,26 +21,35 @@ public class TransferenciaService {
 	TransferenciaRepository transferenciaRepository;
 	
 	
-	public String realizaTransferencia(Transferencia t) {
+	public String realizaTransferencia(Transferencia t) throws Exception {
 		log.info("Iniciando Transferência");
 	
-		try {
-			log.info("Calculando taxa da Transferência....");
-			BigDecimal taxa = Util.calculaTaxa(t.getDataTransferencia(), t.getValorTransferencia()); 
-			t.setTaxa(taxa);
-		    log.info("Taxa calculada: "+taxa);
-		    transferenciaRepository.save(t);
-		} catch (Exception e) {
-			log.error("Ocorreu um erro ao calcular a taxa da transferência", e);
-			return e.getLocalizedMessage();
-		}
+		log.info("Calculando taxa da Transferência....");
+		BigDecimal taxa = Util.calculaTaxa(t.getDataTransferencia(), t.getValorTransferencia()); 
+		t.setTaxa(taxa);
+		log.info("Taxa calculada: "+taxa);
+		transferenciaRepository.save(t);
 		
-		return "Trnsferência realizada com sucesso";
+		return "Transferência realizada com sucesso";
 	}
 	
-	public List<Transferencia> exibeExtrato(){
+	public List<Transferencia> exibeExtrato() throws Exception{
 		
-		return transferenciaRepository.findAll();
+		if (!transferenciaRepository.findAll().isEmpty()) {
+			return transferenciaRepository.findAll();
+		}else
+			throw new Exception("Não há agendamentos a serem listados");
 	}
-
+	
+	public void delete(Long id) {
+		Optional<Transferencia> t = transferenciaRepository.findById(id);
+		transferenciaRepository.delete(t.get());
+	}
+	
+	public Transferencia findOne(Long id) {
+		Optional<Transferencia> t = transferenciaRepository.findById(id);
+		return t.get();
+	}
+	
+	
 }

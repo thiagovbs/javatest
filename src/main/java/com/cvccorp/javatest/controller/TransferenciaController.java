@@ -1,6 +1,5 @@
 package com.cvccorp.javatest.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +9,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cvccorp.javatest.dto.Erro;
+import com.cvccorp.javatest.dto.RetornoDTO;
 import com.cvccorp.javatest.entity.Transferencia;
 import com.cvccorp.javatest.service.TransferenciaService;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("api")
 public class TransferenciaController {
 
 	 @Autowired
@@ -22,22 +23,23 @@ public class TransferenciaController {
 	 
 	 
 	 @RequestMapping(value="/transferir", method=RequestMethod.POST)
-		public @ResponseBody String executaTransferencia(@RequestBody Transferencia transferencia) {
+		public @ResponseBody RetornoDTO<String,Erro> executaTransferencia(@RequestBody Transferencia transferencia) {
 			try {
-				return transefrenciaService.realizaTransferencia(transferencia);
+				return new RetornoDTO<String, Erro>(transefrenciaService.realizaTransferencia(transferencia),null);
 			}
 			catch(Exception ex) { 
-				return ex.getLocalizedMessage();
+				return new RetornoDTO<String, Erro>(null,new Erro(ex.getLocalizedMessage()));
 			}
 	 }
 	 
 	 @RequestMapping(value="/extratos", method=RequestMethod.GET)
-		public @ResponseBody List<Transferencia> getExtratos() {
-			try {
-				return transefrenciaService.exibeExtrato();
+		public @ResponseBody RetornoDTO<List<Transferencia>,Erro> getExtratos() {
+				
+		 	try {
+				return new RetornoDTO<List<Transferencia>, Erro>(transefrenciaService.exibeExtrato(),null);
 			}
 			catch(Exception ex) { 
-				return new ArrayList<Transferencia>();
+				return new RetornoDTO<List<Transferencia>, Erro>(null,new Erro(ex.getLocalizedMessage())); 
 			}
 	 }
 	 
